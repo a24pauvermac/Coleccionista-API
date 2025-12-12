@@ -1,0 +1,486 @@
+/*
+ * Archivo: main.css
+ * Descripción: Estilos profesionales y minimalistas.
+ * Solución ItemCard: Botones siempre abajo, apilados y tarjetas de tamaño uniforme.
+ */
+
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  /* Paleta de Colores (Inspirado en Nueve) */
+  --primary-color: #333333; /* Texto principal */
+  --secondary-color: #707070; /* Texto secundario */
+  --accent-color: #333333; /* Acento Negro */
+  --background-color: #f6f3ed; /* Fondo Crema */
+  --card-background: #ffffff; /* Blanco puro */
+  --input-background: #e9e5de; /* Fondo inputs */
+  --border-color: #d8d8d8; /* Bordes sutiles */
+  --shadow-color: rgba(0, 0, 0, 0.08);
+
+  /* Tipografía */
+  --font-serif-header: "Playfair Display", serif;
+  --font-sans-body: "Montserrat", "Helvetica Neue", sans-serif;
+
+  /* Animaciones */
+  --transition-duration: 0.6s;
+  --easing: ease-in-out;
+}
+
+/* Fuentes */
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Playfair Display"), local("PlayfairDisplay-Regular"),
+    url("https://fonts.gstatic.com/s/playfairdisplay/v22/nuFwXwASz5HJDcWW_l_hJ9Y_vyg.woff2")
+      format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Montserrat Regular"), local("Montserrat-Regular"),
+    url("https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.woff2")
+      format("woff2");
+  font-display: swap;
+}
+
+/* ==========================================================================
+   2. ESTILOS BASE
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans-body);
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Títulos */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif-header);
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-top: 1rem;
+  text-transform: capitalize;
+}
+
+/* Enlaces */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all var(--transition-duration) var(--easing);
+}
+
+a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+/* Botones Globales */
+button,
+.btn,
+input[type="submit"] {
+  cursor: pointer;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0px;
+  font-family: var(--font-sans-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-duration) var(--easing);
+  background-color: var(--accent-color);
+  color: var(--card-background);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+button:hover,
+.btn:hover,
+input[type="submit"]:hover {
+  background-color: #555555;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+button:active,
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA APP
+   ========================================================================== */
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.app-header {
+  background-color: var(--background-color);
+  padding: 1rem 2rem 0 2rem;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+
+.main-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.main-title-circle {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: #222222;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+
+.subtitle {
+  font-family: var(--font-sans-body);
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin-top: 0.25rem;
+}
+
+.main-content {
+  flex-grow: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  animation: fadeIn 1s var(--easing);
+}
+
+.app-footer {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   4. COMPONENTES (CARD, FORMULARIOS) - MODIFICADO
+   ========================================================================== */
+
+/* --- ItemCard.vue --- */
+.item-card {
+  display: flex;
+  flex-direction: column; /* Estructura vertical */
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: box-shadow var(--transition-duration) var(--easing);
+  margin: 1rem;
+
+  /* Dimensiones fijas para uniformidad */
+  width: 300px;
+  min-height: 520px; /* Altura suficiente para contenido + botones */
+  text-align: center;
+  position: relative;
+}
+
+.item-card:hover {
+  transform: none;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* Imagen */
+.item-card img {
+  width: 100%;
+  height: 250px; /* Altura forzada de imagen */
+  object-fit: cover;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Placeholder por si usas un div cuando no hay imagen */
+.item-card .img-placeholder {
+  width: 100%;
+  height: 250px;
+  background-color: #eaeaea;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.item-card .img-placeholder::after {
+  content: "Sin Imagen";
+}
+
+/* Título */
+.item-card h2 {
+  font-family: var(--font-sans-body);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0; /* No encoger */
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Descripción (El truco del flex-grow) */
+.item-card p,
+.item-card .detail-description {
+  font-size: 0.95rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+
+  /* ESTO ES LO IMPORTANTE: */
+  flex-grow: 1; /* Ocupa todo el espacio vacío disponible */
+
+  /* Truncado */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botones dentro de la tarjeta */
+.item-card button,
+.item-card .btn,
+.item-card a.btn {
+  width: 100%; /* Ancho completo */
+  display: block; /* Comportamiento de bloque */
+  margin-top: 0.5rem; /* Separación entre botones */
+  margin-bottom: 0; /* Reseteo */
+  text-align: center;
+}
+
+/* Contenedor Grid/Flex para las cartas */
+.main-content > div:not(.search-bar) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* --- SearchBar.vue --- */
+.search-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.search-bar input[type="text"] {
+  flex-grow: 1;
+  padding: 1rem 1.25rem;
+  border: none;
+  border-radius: 2rem;
+  font-family: var(--font-sans-body);
+  font-size: 1rem;
+  color: var(--primary-color);
+  background-color: var(--input-background);
+  transition: all var(--transition-duration) var(--easing);
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: var(--secondary-color);
+  opacity: 0.8;
+}
+
+.search-bar input[type="text"]:focus {
+  background-color: var(--card-background);
+  box-shadow: 0 0 0 1px var(--primary-color);
+  outline: none;
+}
+
+.search-bar button {
+  border-radius: 2rem;
+}
+
+/* Estados de carga */
+.main-content > div[v-if="loading"],
+.main-content > div[v-if="error"],
+main-content > p[v-else] {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  padding: 2rem;
+  font-style: italic;
+  animation: fadeIn 0.5s var(--easing);
+}
+
+/* ==========================================================================
+   5. NAVBAR
+   ========================================================================== */
+
+.navbar {
+  background: var(--background-color);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  color: var(--secondary-color);
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  flex: 1;
+  max-width: 140px;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.nav-link:hover {
+  color: var(--accent-color);
+  background: var(--card-background);
+  border-bottom-color: var(--accent-color);
+}
+
+.nav-link.router-link-active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+  background: linear-gradient(to bottom, rgba(51, 51, 51, 0.05), transparent);
+}
+
+.nav-link.router-link-active .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+  }
+  .nav-link {
+    padding: 1rem 1rem;
+    min-width: 80px;
+  }
+  .nav-text {
+    font-size: 0.75rem;
+  }
+  .nav-icon {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-link {
+    padding: 0.75rem 0.5rem;
+  }
+  .nav-text {
+    font-size: 0.7rem;
+  }
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-link:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.nav-link:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.nav-link:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.nav-link:nth-child(4) {
+  animation-delay: 0.4s;
+}
